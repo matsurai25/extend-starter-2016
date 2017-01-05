@@ -4,6 +4,7 @@ const browserify   = require('browserify');
 const source       = require('vinyl-source-stream');
 const rimraf       = require('rimraf');
 const sequence     = require('run-sequence');
+const header       = require('gulp-header');
 
 const BUNDLENAME = 'bundle.jsx';
 const DIST = './dist/';
@@ -29,6 +30,7 @@ gulp.task('build', () => {
     this.emit("end");
   })
   .pipe(source(BUNDLENAME))
+  .pipe(header("var thisObj = this;\n")) // browserifyする関係で最初のthisが取れなくなるので、ここで代入して使用する。
   .pipe(gulp.dest(DIST));
 });
 
